@@ -18,7 +18,6 @@ model User {
   name     String
   email    String @unique
   password String
-  cpf      String
 
   bankAccounts BankAccount[]
   categories   Category[]
