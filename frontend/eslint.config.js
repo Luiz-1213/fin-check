@@ -26,13 +26,13 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      "@typescript-eslint/no-empty-object-type": 'off',
       "react/function-component-definition": [
       "error",
       {
         "namedComponents": "function-declaration",
       }
     ],
-      "no-empty-object": false,
       "indent": ["error", 2],
       "quotes": ["error", "single"],
       "semi": ["error", "always"],
