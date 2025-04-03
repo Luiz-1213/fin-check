@@ -16,13 +16,21 @@ import FiltersModal from './FiltersModal';
 
 
 export  function Transactions() {
-  const {areValuesVisible, isInitialLoading, isLoading, transactions,}= useTransactionsController();
+  const {
+    areValuesVisible,
+    isInitialLoading,
+    isLoading,
+    transactions,
+    isFiltersModalOpen,
+    handleCloseFiltersModal,
+    handleOpenFiltersModal,
+  }= useTransactionsController();
 
   const hasTransactions = transactions.length > 0;
 
   return (
     <div className="bg-gray-100 rounded-2xl w-full h-full px-4 py-8 md:p-10 flex flex-col" >
-      <FiltersModal/>
+
       {isInitialLoading && (
         <div className='w-full h-full flex items-center justify-center'>
           <Spinner className='h-10 w-10'/>
@@ -30,10 +38,11 @@ export  function Transactions() {
       )}
       {!isInitialLoading && (
         <>
+          <FiltersModal open={isFiltersModalOpen} onClose={handleCloseFiltersModal}/>
           <header >
             <div className='flex items-center justify-between'>
               <TransactionTypeDropdown/>
-              <button>
+              <button onClick={handleOpenFiltersModal}>
                 <FilterIcon/>
               </button>
             </div>

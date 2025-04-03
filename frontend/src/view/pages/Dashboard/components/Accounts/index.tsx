@@ -3,9 +3,6 @@ import 'swiper/css';
 import { EyeIcon } from '../../../../components/icons/EyeIcon';
 import { AccountCard } from './AccountCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-
-
 import { SliderNavigation } from './SliderNavigation';
 import { useAccountsController } from './useAccountsController';
 import { formatCurrency } from '../../../../../app/utils/formatCurrency';
@@ -21,7 +18,9 @@ export  function Accounts() {
     areValuesVisible,
     toggleValuesVisibility,
     isLoading,
-    accounts
+    accounts,
+    openNewAccountModal,
+    currentBalance
   } = useAccountsController();
 
 
@@ -39,7 +38,7 @@ export  function Accounts() {
             <span className=" tracking-[-0.5px] text-white block">Saldo total</span>
             <div className='flex items-center gap-2'>
               <strong className={cn('text-2xl tracking-[-1px] text-white',!areValuesVisible && 'blur-md' )}>
-                {formatCurrency(1000.00)}
+                {formatCurrency(currentBalance)}
               </strong>
               <button
                 className='flex items-center justify-center w-8 h-8'
@@ -61,6 +60,7 @@ export  function Accounts() {
 
                 <button
                   className='mt-4 h-52 rounded-2xl border-2 border-dashed border-teal-600 flex flex-col items-center justify-center gap-4 text-white'
+                  onClick={openNewAccountModal}
                 >
                   <div className='w-11 h-11 rounded-full border-2 border-dashed border-white flex  items-center justify-center'>
                     <PlusIcon className='w-6 h-6'/>
@@ -96,30 +96,11 @@ export  function Accounts() {
                       isEnd={sliderState.isEnd}
                     />
                   </div>
-
-                  <SwiperSlide>
-                    <AccountCard
-                      name={'Nubank'}
-                      balance={1056.93}
-                      color={'#7950f2'}
-                      type='CHECKING' />
-                  </SwiperSlide>
-
-                  <SwiperSlide>
-                    <AccountCard
-                      name={'XP'}
-                      balance={500.64}
-                      color={'#333'}
-                      type='INVESTMENT' />
-                  </SwiperSlide>
-
-                  <SwiperSlide>
-                    <AccountCard
-                      name={'Carteira'}
-                      balance={20.50}
-                      color={'#0f0'}
-                      type='CASH' />
-                  </SwiperSlide>
+                  {accounts.map((account)=>
+                    <SwiperSlide key={account.id}>
+                      <AccountCard data={account}/>
+                    </SwiperSlide>
+                  )}
                 </Swiper>
               </div>)}
 
