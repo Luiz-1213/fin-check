@@ -1,5 +1,5 @@
 import { createContext, useCallback, useState } from 'react';
-import { BankAccount } from '../../../../../app/entities/bankAccount';
+import { BankAccount } from '../../../../../app/entities/BankAccount';
 
 interface DashboardContextValue{
   areValuesVisible: boolean
@@ -61,7 +61,6 @@ export function DashboardProvider({children}: {children: React.ReactNode}){
     setIsNewTransactionModalOpen(false);
   }, []);
 
-
   return (
     <DashboardContext.Provider
       value={{
@@ -77,7 +76,7 @@ export function DashboardProvider({children}: {children: React.ReactNode}){
         isEditAccountModalOpen,
         accountBeingEdited,
         closeEditAccountModal,
-        openEditAccountModal
+        openEditAccountModal,
       }}>
       {children}
 

@@ -1,5 +1,5 @@
 
-import { BankAccount } from '../../../../../app/entities/bankAccount';
+import { BankAccount } from '../../../../../app/entities/BankAccount';
 import { cn } from '../../../../../app/utils/cn';
 import { formatCurrency } from '../../../../../app/utils/formatCurrency';
 import { BankAccountTypeIcon } from '../../../../components/icons/BankAccountTypeIcon';

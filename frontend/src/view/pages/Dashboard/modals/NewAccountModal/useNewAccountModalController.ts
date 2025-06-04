@@ -3,9 +3,9 @@ import { useDashboard } from '../../components/DashboardContext/useDashboard';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { bankAccountsService } from '../../../../../app/services/bankAccountService';
 import { currencyStringToNumber } from '../../../../../app/utils/currencyStringToNumber';
 import toast from 'react-hot-toast';
+import { bankAccountsService } from '../../../../../app/services/bankAccountsService';
 
 const schema = z.object({
   initialBalance: z.string().nonempty('Saldo inicial é obrigatório'),
