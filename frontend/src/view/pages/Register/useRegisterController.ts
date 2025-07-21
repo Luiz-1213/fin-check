@@ -1,11 +1,11 @@
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { z } from 'zod';
+import { useAuth } from '../../../app/hooks/useAuth';
 import { authService } from '../../../app/services/authService';
 import { SignupParams } from '../../../app/services/authService/signup';
-import { toast } from 'react-hot-toast';
-import { useAuth } from '../../../app/hooks/useAuth';
 
 const schema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
@@ -30,7 +30,7 @@ export function useRegisterController() {
     resolver: zodResolver(schema),
   });
 
-  const { isLoading, mutateAsync } = useMutation({
+  const { isPending, mutateAsync } = useMutation({
     mutationFn: async (data: SignupParams) => {
       return authService.signup(data);
     },
@@ -54,6 +54,6 @@ export function useRegisterController() {
     handleSubmit,
     register,
     errors,
-    isLoading,
+    isLoading: isPending,
   };
 }
