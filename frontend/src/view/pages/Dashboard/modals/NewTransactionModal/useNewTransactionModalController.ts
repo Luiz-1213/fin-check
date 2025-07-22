@@ -11,7 +11,7 @@ import { currencyStringToNumber } from '../../../../../app/utils/currencyStringT
 import { useDashboard } from '../../components/DashboardContext/useDashboard';
 
 const schema = z.object({
-  value: z.string().nonempty('Informe o valor'),
+  value: z.union([z.string().nonempty('Informe o valor'), z.number()]),
   name: z.string().nonempty('Informe o nome'),
   categoryId: z.string().nonempty('Informe a categoria'),
   bankAccountId: z.string().nonempty('Informe a conta'),

@@ -3,7 +3,6 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
-  IsPositive,
   IsString,
   IsUUID,
 } from 'class-validator';
@@ -26,7 +25,6 @@ export class CreateTransactionDto {
 
   @IsNumber()
   @IsNotEmpty()
-  @IsPositive()
   value: number;
 
   @IsNotEmpty()

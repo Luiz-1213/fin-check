@@ -5,7 +5,7 @@ import { cn } from '../../app/utils/cn';
 interface InputCurrencyProps {
   error?: string;
   value?: string | number;
-  onChange?(value: string): void;
+  onChange?(value: string | number): void;
 }
 
 export function InputCurrency({ error, onChange, value }: InputCurrencyProps) {
@@ -19,7 +19,7 @@ export function InputCurrency({ error, onChange, value }: InputCurrencyProps) {
         fixedDecimalScale={false}
         value={value}
         onValueChange={({ value }) => {
-          onChange?.(value ?? 0);
+          onChange?.(Number(value ?? 0));
         }}
         className={cn(
           ' w-full text-gray-800 text-[32px] font-bold tracking-[-1px] outline-none',
