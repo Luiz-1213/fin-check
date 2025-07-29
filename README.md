@@ -1,5 +1,5 @@
 <h1 align="center"> 
-  <img src="./frontend/public/preview.png" alt="Fincheck - Preview" border="0" />
+  <img src="./frontend/assets/preview.png" alt="Fincheck - Preview" border="0" />
 </h1>
 
 <h3 align="center">
