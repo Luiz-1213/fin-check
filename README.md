@@ -131,7 +131,7 @@ yarn dev
 Acesse a documentação Swagger da API em:
 
 ```
-http://localhost:3001/api
+http://localhost:3001/api/docs
 ```
 
 Lá você encontra todos os endpoints, schemas e exemplos de requisição.
