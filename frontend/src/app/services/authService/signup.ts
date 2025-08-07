@@ -8,6 +8,7 @@ export interface SignupParams {
 
 interface SignupResponse {
   accessToken: string;
+  refreshToken: string;
 }
 
 export async function signup(params: SignupParams) {

@@ -40,9 +40,9 @@ export function useRegisterController() {
 
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
-      const { accessToken } = await mutateAsync(data);
+      const { accessToken, refreshToken } = await mutateAsync(data);
 
-      signin(accessToken);
+      signin({ accessToken, refreshToken });
 
       toast.success('Conta criada com sucesso!');
     } catch {
