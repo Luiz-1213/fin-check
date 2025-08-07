@@ -1,10 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { isPublic } from 'src/shared/decorators/IsPublic';
-import { AuthService } from './auth.service';
 import { SinginDto } from './dto/signin.dto';
 import { SignupDto } from './dto/signup.dto';
+import { AuthService } from './services/auth.service';
 
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @ApiTags('Autenticação')
 @isPublic() // continua sendo uma rota pública
@@ -32,5 +33,27 @@ export class AuthController {
   @ApiBody({ type: SignupDto })
   create(@Body() signupDto: SignupDto) {
     return this.authService.signup(signupDto);
+  }
+
+  @Post('refresh-token')
+  @ApiOperation({ summary: 'Cria um novo par de tokens' })
+  @ApiResponse({
+    status: 200,
+    description: 'Access Token e Refresh Token',
+  })
+  @ApiResponse({ status: 401, description: 'Refresh Token inválido' })
+  createRefreshToken(@Body() { refreshToken }: RefreshTokenDto) {
+    return this.authService.refreshToken(refreshToken);
+  }
+
+  @Post('revoke')
+  @ApiOperation({ summary: 'Revogar o acesso' })
+  @ApiResponse({
+    status: 204,
+    description: 'Sem conteudo',
+  })
+  @HttpCode(204)
+  revokeToken(@Body() { refreshToken }: RefreshTokenDto) {
+    return this.authService.revokeToken(refreshToken);
   }
 }
