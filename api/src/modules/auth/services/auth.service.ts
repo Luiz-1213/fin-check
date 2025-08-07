@@ -1,19 +1,20 @@
 import {
   ConflictException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { SinginDto } from './dto/signin.dto';
-import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
 import { compare, hash } from 'bcryptjs';
-import { SignupDto } from './dto/signup.dto';
-import { JwtService } from '@nestjs/jwt';
+import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
+import { SinginDto } from '../dto/signin.dto';
+import { SignupDto } from '../dto/signup.dto';
+import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersRepo: UsersRepository,
-    private readonly jwtService: JwtService,
+    private readonly tokenService: TokenService,
   ) {}
 
   async signin(singinDto: SinginDto) {
@@ -33,8 +34,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const accessToken = await this.generateAcessToken(user.id);
-    return { accessToken };
+    return this.tokenService.generateTokens(user.id);
   }
 
   async signup(signupDto: SignupDto) {
@@ -79,11 +79,23 @@ export class AuthService {
       },
     });
 
-    const accessToken = await this.generateAcessToken(user.id);
-    return { accessToken };
+    return this.tokenService.generateTokens(user.id);
   }
 
-  private async generateAcessToken(userId: string) {
-    return this.jwtService.signAsync({ sub: userId });
+  async refreshToken(refreshTokenId: string) {
+    try {
+      const { userId } =
+        await this.tokenService.validateRefreshToken(refreshTokenId);
+
+      await this.tokenService.revokeRefreshToken(refreshTokenId + '   ');
+      return await this.tokenService.generateTokens(userId);
+    } catch (error) {
+      console.log(error);
+      throw new NotFoundException('Token not found');
+    }
+  }
+
+  revokeToken(refreshTokenId: string) {
+    return this.tokenService.revokeRefreshToken(refreshTokenId);
   }
 }
