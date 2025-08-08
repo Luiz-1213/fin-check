@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import qs from 'qs';
 import {
   ReactNode,
   createContext,
@@ -24,6 +25,7 @@ interface AuthContextValue {
   signedIn: boolean;
   signin(signParams: ISignParams): void;
   signout(): void;
+  signInWithGoogle(): void;
   user: User | undefined;
 }
 
@@ -53,6 +55,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSignedIn(true);
   }, []);
 
+  const signInWithGoogle = useCallback(() => {
+    const baseURL = 'https://accounts.google.com/o/oauth2/v2/auth';
+
+    const options = qs.stringify({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      redirect_uri: 'http://localhost:5173/callbacks/google',
+      response_type: 'code',
+      scope: 'email profile',
+    });
+
+    window.location.href = `${baseURL}?${options}`;
+  }, []);
+
   const signout = useCallback(async () => {
     const refreshToken = localStorage.getItem(localStorageKeys.REFRESH_TOKEN);
 
@@ -64,6 +79,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryClient.removeQueries({ queryKey: ['users', 'me'] });
 
     setSignedIn(false);
+
+    toast.success('Logout efetuado com sucesso!');
   }, [queryClient]);
 
   useLayoutEffect(() => {
@@ -113,6 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signedIn: isSuccess && signedIn,
         signin,
         signout,
+        signInWithGoogle,
         user: data,
       }}
     >
