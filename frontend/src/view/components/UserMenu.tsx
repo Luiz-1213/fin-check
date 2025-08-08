@@ -5,13 +5,23 @@ import { DropdownMenu } from './DropdownMenu';
 export function UserMenu() {
   const { signout, user } = useAuth();
 
+  const hasPhoto = user?.photo;
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <button className="bg-teal-50 rounded-full w-12 h-12 flex items-center justify-center border border-teal-100">
-          <span className="text-sm tracking-[-0.5px] text-teal-900 font-medium">
-            {user?.name.slice(0, 2).toUpperCase()}
-          </span>
+        <button className="bg-teal-50 rounded-full w-12 h-12 flex items-center justify-center border border-teal-700">
+          {hasPhoto ? (
+            <img
+              src={user.photo}
+              alt="Foto de perfil"
+              className="rounded-full"
+            />
+          ) : (
+            <span className="text-sm tracking-[-0.5px] text-teal-900 font-medium">
+              {user?.firstName.slice(0, 2).toUpperCase()}
+            </span>
+          )}
         </button>
       </DropdownMenu.Trigger>
 
