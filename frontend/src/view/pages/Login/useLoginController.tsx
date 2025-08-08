@@ -34,7 +34,7 @@ export default function useLoginController() {
     },
   });
 
-  const { signin } = useAuth();
+  const { signin, signInWithGoogle } = useAuth();
 
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
@@ -47,5 +47,11 @@ export default function useLoginController() {
     }
   });
 
-  return { handleSubmit, register, errors, isLoading: isPending };
+  return {
+    handleSubmit,
+    signInWithGoogle,
+    register,
+    errors,
+    isLoading: isPending,
+  };
 }

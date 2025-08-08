@@ -8,7 +8,8 @@ import { authService } from '../../../app/services/authService';
 import { SignupParams } from '../../../app/services/authService/signup';
 
 const schema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório'),
+  firstName: z.string().min(1, 'Nome é obrigatório'),
+  lastName: z.string().min(1, 'Sobrenome é obrigatório'),
   email: z
     .string()
     .min(1, 'E-mail é obrigatório')
@@ -36,7 +37,7 @@ export function useRegisterController() {
     },
   });
 
-  const { signin } = useAuth();
+  const { signin, signInWithGoogle } = useAuth();
 
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
@@ -52,6 +53,7 @@ export function useRegisterController() {
 
   return {
     handleSubmit,
+    signInWithGoogle,
     register,
     errors,
     isLoading: isPending,
