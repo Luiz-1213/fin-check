@@ -6,6 +6,7 @@ import { AuthService } from './services/auth.service';
 
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { SocialLoginDto } from './dto/social-login.dto';
 
 @ApiTags('Autenticação')
 @isPublic() // continua sendo uma rota pública
@@ -33,6 +34,23 @@ export class AuthController {
   @ApiBody({ type: SignupDto })
   create(@Body() signupDto: SignupDto) {
     return this.authService.signup(signupDto);
+  }
+
+  @Post('social-login')
+  @ApiOperation({ summary: 'Cria ou loga com login social' })
+  @ApiResponse({
+    status: 201,
+    description:
+      'Usuário criado/criado com sucesso e retorno do Access Token e Refresh Token',
+  })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  @ApiResponse({
+    status: 401,
+    description: 'Code inválido ou email não verificado',
+  })
+  @ApiBody({ type: SocialLoginDto })
+  signWithSocialLogin(@Body() { code, provider, redirectUri }: SocialLoginDto) {
+    return this.authService.socialLogin(provider, code, redirectUri);
   }
 
   @Post('refresh-token')
