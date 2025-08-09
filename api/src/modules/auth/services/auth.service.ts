@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -8,6 +9,7 @@ import { compare, hash } from 'bcryptjs';
 import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
 import { SinginDto } from '../dto/signin.dto';
 import { SignupDto } from '../dto/signup.dto';
+import { SignWithGoogleService } from './sign-in-with-google.service';
 import { TokenService } from './token.service';
 
 @Injectable()
@@ -15,6 +17,7 @@ export class AuthService {
   constructor(
     private readonly usersRepo: UsersRepository,
     private readonly tokenService: TokenService,
+    private readonly signWithGoogleService: SignWithGoogleService,
   ) {}
 
   async signin(singinDto: SinginDto) {
@@ -28,6 +31,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    if (user.password === null) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
     const isPasswordValid = await compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -38,7 +45,7 @@ export class AuthService {
   }
 
   async signup(signupDto: SignupDto) {
-    const { name, email, password } = signupDto;
+    const { firstName, lastName, email, password } = signupDto;
 
     const emailTaken = await this.usersRepo.findUnique({
       where: { email },
@@ -53,7 +60,8 @@ export class AuthService {
 
     const user = await this.usersRepo.create({
       data: {
-        name,
+        firstName,
+        lastName,
         email,
         password: hashedPassword,
         categories: {
@@ -87,7 +95,7 @@ export class AuthService {
       const { userId } =
         await this.tokenService.validateRefreshToken(refreshTokenId);
 
-      await this.tokenService.revokeRefreshToken(refreshTokenId + '   ');
+      await this.tokenService.revokeRefreshToken(refreshTokenId);
       return await this.tokenService.generateTokens(userId);
     } catch (error) {
       console.log(error);
@@ -97,5 +105,13 @@ export class AuthService {
 
   revokeToken(refreshTokenId: string) {
     return this.tokenService.revokeRefreshToken(refreshTokenId);
+  }
+
+  async socialLogin(provider: string, code: string, redirectUri: string) {
+    if (provider === 'google') {
+      return this.signWithGoogleService.execute(code, redirectUri);
+    } else {
+      throw new BadRequestException('Provider is not Valid');
+    }
   }
 }
