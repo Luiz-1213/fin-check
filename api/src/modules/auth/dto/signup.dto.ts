@@ -8,7 +8,15 @@ export class SignupDto {
   })
   @IsString()
   @IsNotEmpty()
-  name: string;
+  firstName: string;
+
+  @ApiProperty({
+    example: 'Nome e Sobrenome',
+    description: 'Nome completo do usuário',
+  })
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
   @ApiProperty({
     example: 'usuario@email.com',

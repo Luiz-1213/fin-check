@@ -9,7 +9,7 @@ export class UsersService {
   async getUserById(userId: string) {
     return await this.usersRepo.findUnique({
       where: { id: userId },
-      select: { name: true, email: true },
+      select: { firstName: true, email: true, photo: true },
     });
   }
 }
