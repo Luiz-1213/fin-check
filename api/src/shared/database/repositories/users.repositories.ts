@@ -10,6 +10,10 @@ export class UsersRepository {
     return this.prismaService.user.create(createDto);
   }
 
+  upsert(upsertDto: Prisma.UserUpsertArgs) {
+    return this.prismaService.user.upsert(upsertDto);
+  }
+
   findUnique(findUniqueDto: Prisma.UserFindUniqueArgs) {
     return this.prismaService.user.findUnique(findUniqueDto);
   }
