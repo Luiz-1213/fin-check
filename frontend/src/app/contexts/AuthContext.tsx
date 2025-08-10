@@ -60,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const options = qs.stringify({
       client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-      redirect_uri: 'http://localhost:5173/callbacks/google',
+      redirect_uri: 'https://fin-check-theta.vercel.app/callbacks/google',
       response_type: 'code',
       scope: 'email profile',
     });
