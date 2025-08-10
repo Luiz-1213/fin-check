@@ -109,7 +109,7 @@ export class AuthService {
 
   async socialLogin(provider: string, code: string, redirectUri: string) {
     if (provider === 'google') {
-      return this.signWithGoogleService.execute(code, redirectUri);
+      return await this.signWithGoogleService.execute(code, redirectUri);
     } else {
       throw new BadRequestException('Provider is not Valid');
     }

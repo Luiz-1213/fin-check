@@ -42,6 +42,10 @@ export class TokenService {
   }
 
   async revokeRefreshToken(refreshTokenId: string) {
-    await this.refreshTokensRepo.delete({ where: { id: refreshTokenId } });
+    try {
+      await this.refreshTokensRepo.delete({ where: { id: refreshTokenId } });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

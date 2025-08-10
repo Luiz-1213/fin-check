@@ -35,7 +35,7 @@ export default function useGoogleController() {
         const { accessToken, refreshToken } = await mutateAsync({
           code,
           provider: 'google',
-          redirectUri: 'http://localhost:5173/callbacks/google',
+          redirectUri: 'https://fin-check-theta.vercel.app/callbacks/google',
         });
 
         signin({ accessToken, refreshToken });
